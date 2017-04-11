@@ -9,7 +9,7 @@ import javax.sql.DataSource
 
 class GrailsMelodyGrailsPlugin {
 
-	def version = "1.57.0"
+	def version = "1.65.0"
 	def grailsVersion = "2.0 > *"
 
 	def loadAfter = [
@@ -163,7 +163,10 @@ class GrailsMelodyGrailsPlugin {
 						def property = delegate."${name}"
 						if(property instanceof Closure){
 							found = true
-							metaMethod = [doMethodInvoke: {dlg, arguments-> property.call(arguments)}]
+							  metaMethod = [doMethodInvoke: { dlg, arguments ->
+                                def theArgs = arguments ? arguments.size() == 1 ? arguments[0] : arguments as List : null
+                                property.call(theArgs)
+}]
 						}
 					}
 					if (!found){
